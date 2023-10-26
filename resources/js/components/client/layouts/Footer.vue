@@ -41,7 +41,7 @@
 <!--            </div>-->
 <!--        </div>-->
 <!--    </div>-->
-    <div class="offcanvas-backdrop pwa-backdrop"></div>
+<!--    <div class="offcanvas-backdrop pwa-backdrop"></div>-->
     <!-- PWA Offcanvas End -->
 </template>
 
@@ -49,5 +49,8 @@
 import {defineComponent} from "vue";
 
 export default defineComponent({
+    mounted() {
+    console.log('footer');
+}
 })
 </script>

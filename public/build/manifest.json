@@ -4,23 +4,25 @@
     "isEntry": true,
     "src": "resources/css/variable.css"
   },
-  "resources/js/app.css": {
-    "file": "assets/app-d32da40b.css",
-    "src": "resources/js/app.css"
-  },
   "resources/js/app.js": {
-    "css": [
-      "assets/app-d32da40b.css"
-    ],
     "dynamicImports": [
+      "resources/js/layouts/client.vue",
       "resources/js/views/client/Home.vue"
     ],
-    "file": "assets/app-971a54de.js",
+    "file": "assets/app-b1d1cee4.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   },
+  "resources/js/layouts/client.vue": {
+    "file": "assets/client-a7be6394.js",
+    "imports": [
+      "resources/js/app.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "resources/js/layouts/client.vue"
+  },
   "resources/js/views/client/Home.vue": {
-    "file": "assets/Home-054b1e77.js",
+    "file": "assets/Home-f917c0ca.js",
     "imports": [
       "resources/js/app.js"
     ],

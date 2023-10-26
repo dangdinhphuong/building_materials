@@ -400,7 +400,13 @@
 
 <script>
 export default {
-    name: "Home"
+    name: "Home",
+    created() {
+
+    },
+    mounted() {
+        console.log('home');
+    }
 }
 </script>
 

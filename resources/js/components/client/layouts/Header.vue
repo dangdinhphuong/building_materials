@@ -1,12 +1,5 @@
 <template>
-    <!-- Preloader -->
-    <div id="preloader">
-        <div class="loader">
-            <div class="load-circle"><div></div><div></div></div>
-        </div>
-    </div>
-    <!-- Preloader end-->
-
+    <my-loader  v-if="preloader"></my-loader>
     <!-- Header -->
     <header class="header shadow header-fixed border-0">
         <div class="container">
@@ -41,6 +34,16 @@ import {defineComponent, ref} from "vue";
 export default defineComponent({
     props: [],
     components: {},
-    emits: ["trigger-sidebar-collapse"]
+    data() {
+        return {
+            preloader: true
+        }
+    },
+    mounted() {
+        setTimeout(()=>{
+            this.preloader = false;
+        },1000)
+
+    }
 })
 </script>
