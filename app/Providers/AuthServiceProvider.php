@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Permissions;
+use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -25,6 +27,16 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        $this->registerPolicies();
+        Permissions::where('parent_id', '>', '0')->get()->map(function ($permission) {
+            Gate::define($permission->key_code, function (User $user) use ($permission) {
+
+                $role = $user->roles;
+                $permissions = $role->permissions;
+                if ($permissions->contains('key_code', $permission->key_code)) {
+                    return true;
+                }
+            });
+        });
     }
 }
