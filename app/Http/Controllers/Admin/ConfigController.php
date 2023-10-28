@@ -5,55 +5,39 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\config;
+use App\Services\Admin\ConfigService;
 class ConfigController extends Controller
 {
+    protected $configService;
+
+    public function __construct(ConfigService $configService)
+    {
+        $this->configService = $configService;
+    }
     public function config(){
        //$config= config::first();
        return view('admin.pages.auth.config');
     }
-    public function updateConfig(Request $request){
+    public function updateConfig(Request $request, $id){
         $config= config::first();
         $this->validate(request(),[
-            'logo' => 'nullable|image|mimes:jpeg,png|max:2048',
-            'email'    => 'required|email',
-            'phone' => 'required|numeric|digits_between:10,12',
-            'address'=>'required|min:3|max:200',
-        ],
-        [
-            'email.required' => 'Mời nhập e-mail !',
-            'email.email' => 'e-mail không đúng định dạng !',
-           'logo.mimes'=>'Hình đại diện phải là tệp thuộc loại: image / png ',
-           'logo.image'=>'Hình đại diện phải là tệp thuộc loại: image / png ',
-            'logo.max'=>'logo dụng lượng tối đa 2048mb',
-            'phone.required'=>'Bạn chưa nhập số điện thoại',
-            'phone.digits_between'=>'Độ dài số điện thoại không hợp lệ',
-            'phone.numeric'=>'Số điện thoại không hợp lệ',
-            'address.required'=>'Bạn chưa nhập địa chỉ',
-            'address.unique' => 'Địa chỉ không được trùng',
-            'address.min'=>'Địa chỉ phải có Độ dài  từ 3 đến 200 ký tự',
-            'address.max'=>'Địa chỉ phải có Độ dài  từ 3 đến 200 ký tự',
+            'key' => 'required',
+            'type'    => 'required',
+            'group' => 'required',
+            'value'=>'nullable',
         ]);
-        if ($request->file('logo') != null) {
 
-            if (!empty($config->logo) && file_exists('storage/' . $config->logo)) {
-                unlink('storage/' . $config->logo);
-            }
-            $pathAvatar = $request->file('logo')->store('public/images/logo');
-            $pathAvatar = str_replace("public/", "", $pathAvatar);
-        } else {
-            $pathAvatar = $config->logo;
+        $data = $request->all();unset($data["_token"]);
+
+        $config = $this->configService->getConfigByKey($data['key']); dd($config);
+        if ($request->hasFile('value')) {
+            $image = $this->configService->updateFileInStore($request , $config);
+            unset($data['value']);
+            $data['value'] = $image;
         }
-        $data = request([
-        'link_facebook',
-        'link_twitter',
-        'link_linkedin',
-        'phone',
-        'address',
-        'email']);
-        $data['logo'] = $pathAvatar;
-        $config->update($data);
-       // dd($config);
-       return redirect()->back()->with('message', 'Cập nhật thông tin thành công');
+        $this->configService->updateOrCreateData($data , $config);
+//        Config::updateOrInsert(['key' => $data['key']], $data);
+        return response()->json(['message' => 'Cập nhật thông tin thành công'], 200);
      }
 
 }

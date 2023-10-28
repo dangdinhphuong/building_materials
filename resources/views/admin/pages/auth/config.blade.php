@@ -128,28 +128,38 @@
         }
 
         function updateConfig(button, id) {
-            var url = `{{ route('cp-admin.updateConfig',[ 'id' => 0 ]) }}` + id
+            var url = `{{ route('cp-admin.updateConfig', ['id' => 0]) }}` + id;
             var card = $(button).closest('.card');
             var hiddenInputs = card.find('input[type="hidden"]');
-            var valueInput = card.find('input.form-control.col-11').val();
+            var valueInput = card.find('input.form-control.col-11').get(0); // Lấy DOM element thay vì giá trị input
+            var postData = new FormData();
+            postData.append('key', hiddenInputs.eq(0).val());
+            postData.append('type', hiddenInputs.eq(1).val());
+            postData.append('group', hiddenInputs.eq(2).val());
+            postData.append('_token', `{{ csrf_token() }}`);
+            if (hiddenInputs.eq(1).val() == 'file') {
+                if (valueInput && valueInput.files.length > 0) {
+                    postData.append('value', valueInput.files[0]);
+                } else {
+                    swal("vui lòng chọn hình ảnh", {
+                        icon: "error",
+                    });
+                    return false;
+                }
+            } else {
+                postData.append('value', valueInput ? valueInput.value : null);
+            }
 
-            var postData = {
-                'key': hiddenInputs.eq(0).val(),
-                'type': hiddenInputs.eq(1).val(),
-                'group':hiddenInputs.eq(2).val(),
-                'value': valueInput,
-                '_token': `{{ csrf_token() }}`
-            };
             $.ajax({
                 type: "POST",
                 url: url,
-                data: postData, // Thêm dữ liệu vào request POST
-                success: function(res) {
+                data: postData,
+                processData: false, // Không xử lý dữ liệu
+                contentType: false, // Không thiết lập kiểu dữ liệu
+                success: function (res) {
                     if (res.status == 200) {
-                        swal("Tệp của bạn đã bị xóa!", {
+                        swal("Cập nhật thành công!", {
                             icon: "success",
-                        }).then(function() {
-                            $("#pro" + id).remove();
                         });
                     } else if (res.status == 401) {
                         swal(res.message, {

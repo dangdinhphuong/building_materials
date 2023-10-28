@@ -27,7 +27,6 @@ use App\Http\Controllers\Admin\SessionController as AdminSessionController;
 |
 */
 
-//Route::view("/{any}", "app")->where("any", ".*");
 
 Route::get('cp-login', [AdminSessionController::class, 'create'])->name('login');
 Route::post('cp-login', [AdminSessionController::class, 'store'])->name('submitLogin');
@@ -137,3 +136,5 @@ Route::name('cp-admin.')->middleware('AdminLogin')->prefix('cp-admin/')->group(f
         // Route::get('delete/{id}', [BlogsController::class, 'delete'])->name('delete'); // todo xóa khi ko có hóa đơn
     });
 });
+
+Route::view("", "app")->where("any", ".*");

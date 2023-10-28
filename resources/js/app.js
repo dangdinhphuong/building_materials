@@ -5,6 +5,7 @@ import {createApp} from "vue";
 import router from "@/router/index.js";
 import globalComponent from './appCore.js';
 import axios from "axios";
+import SplashScreen from './components/client/layouts/SplashScreen.vue'
 
 window.axios = axios;
 

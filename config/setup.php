@@ -20,17 +20,27 @@ return [
             'key'=>'ADDRESS',
             'type'=>'text',
             'delete' => false
+        ],
+        [
+            'key'=>'QR_PAYMENT',
+            'type'=>'file',
+            'delete' => false
+        ],
+        [
+            'key'=>'QR_ZALO',
+            'type'=>'file',
+            'delete' => false
         ]
     ],
     'website_configuration' => [
         [
-            'key'=>'LINK_FACEBOOK222',
-            'type'=>'text',
+            'key'=>'LOGO',
+            'type'=>'file',
             'delete' => false
         ],
         [
-            'key'=>'PHONE_NUMBER',
-            'type'=>'text',
+            'key'=>'BACKGROUND_COLOR',
+            'type'=>'COLOR',
             'delete' => false
         ],
         [

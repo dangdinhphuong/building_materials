@@ -1,5 +1,6 @@
 <template>
     <div id="layout">
+           <SplashScreen></SplashScreen>
             <Header></Header>
             <Sidebar></Sidebar>
             <router-view></router-view>
@@ -25,6 +26,7 @@ export default defineComponent({
         }
     },
     mounted() {
+
         // Function to append a script to the document's head
         const domain = window.location;
         const appendScript = (src) => {
